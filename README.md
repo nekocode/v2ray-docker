@@ -1,4 +1,8 @@
-Usage:
+versions:
+- caddy: `2.0.0`
+- v2ray: `v4.24.2`
+
+usage:
 
 ```
 docker pull nekocode/v2ray:latest

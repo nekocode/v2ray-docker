@@ -33,8 +33,6 @@ COPY ./Procfile /
 COPY ./caddy/ /caddy/
 COPY ./v2ray/ /v2ray/
 
-VOLUME /conf
-VOLUME /logs
 EXPOSE 80 443
 
 ENTRYPOINT ["/main.sh"]
