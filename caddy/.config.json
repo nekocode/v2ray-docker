@@ -1,0 +1,69 @@
+{
+  "apps": {
+    "http": {
+      "servers": {
+        "gateway": {
+          "listen": [":443"],
+          "routes": [
+            {
+              "match": [
+                {
+                  "host": ["DOMAIN"]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "match": [
+                        {
+                          "path": ["/v2ray"]
+                        }
+                      ],
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "upstreams": [
+                            {
+                              "dial": "localhost:2333"
+                            }
+                          ]
+                        }
+                      ],
+                      "terminal": true
+                    },
+                    {
+                      "handle": [
+                        {
+                          "handler": "file_server",
+                          "root": "/caddy/html"
+                        }
+                      ],
+                      "terminal": true
+                    }
+                  ]
+                }
+              ],
+              "terminal": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "logging": {
+    "logs": {
+      "file": {
+        "level": "INFO",
+        "writer": {
+          "output": "file",
+          "filename": "/caddy/logs/access.log",
+          "roll": true,
+          "roll_size_mb": 50,
+          "roll_keep": 5
+        }
+      }
+    }
+  }
+}

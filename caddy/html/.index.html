@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <title>
+    QRCODE
+  </title>
+  <meta charset="utf-8">
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    body {
+      word-break: break-all;
+    }
+
+    .vmess-link {
+      max-width: 400px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li>
+      <h3>Shadowrocket (iPhone)</h3>
+      <div id="qrcode1"></div>
+    </li>
+    <li>
+      <h3>V2RayU (macOS)</h3>
+      <div id="qrcode2"></div>
+    </li>
+    <li>
+      <h3>V2RayNG (Android)</h3>
+      <div id="qrcode3"></div>
+    </li>
+    <li>
+      <h3>V2RayN (Windows)</h3>
+      <div id="qrcode4"></div>
+    </li>
+  </ul>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"
+    integrity="sha256-Fk/Cwcnq8KA6qN/bhV6C5BpcaSL7rYuzI4EWIH4mvvc=" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    // Shadowrocket
+    function toVMess1(config) {
+      if (!config.method) {
+        config.method = 'chacha20-poly1305';
+      }
+      let url = `${config.method}:${config.id}@${config.add}:${config.port}`;
+      url = btoa(url);
+
+      const remarks = !config.ps
+        ? 'remarks=TRUMPVPN'
+        : `remarks=${encodeURI(config.ps)}`;
+      const obfs =
+        config.net === 'ws'
+          ? `&obfs=websocket`
+          : config.net === 'h2'
+            ? '&obfs=http'
+            : '';
+      const tls = config.tls === 'tls' ? `&tls=1` : '';
+      const path = !config.path ? '' : `&path=${config.path}`;
+      const query = remarks + obfs + tls + path;
+
+      return 'vmess://' + url + '?' + query;
+    }
+
+    // V2rayU
+    function toVMess2(config) {
+      if (!config.method) {
+        config.method = 'chacha20-poly1305';
+      }
+      let url = `${config.method}:${config.id}@${config.add}:${config.port}`;
+      url = btoa(url);
+
+      const remark = !config.ps
+        ? 'remark=v2ray'
+        : `remark=${encodeURI(config.ps)}`;
+      const network = !config.net ? '' : `&network=${config.net}`;
+      const tls = config.tls !== 'tls' ? '' : `&tls=1`;
+      const aid = !config.aid ? '' : `&aid=${config.aid}`;
+      const path = !config.path ? '' : `&h2path=${config.path}`;
+      const query = remark + network + tls + aid + path;
+
+      return 'vmess://' + url + '?' + query;
+    }
+
+    // V2RayN & V2RayNG
+    function toVMess3(config) {
+      config.v = '2';
+      delete config.method;
+      return 'vmess://' + btoa(JSON.stringify(config));
+    }
+
+    const vmessConfig = {
+      add: 'DOMAIN',
+      aid: '64',
+      host: '',
+      id: 'UUID',
+      net: 'ws',
+      path: '/v2ray',
+      port: '443',
+      ps: 'DOMAIN',
+      tls: 'tls',
+      type: 'none',
+      v: '2',
+    };
+
+    function fillTd(elementId, text) {
+      const qr = qrcode(0, 'M');
+      qr.addData(text, 'Byte');
+      qr.make();
+
+      document.getElementById(elementId).innerHTML = '<div>' + qr.createImgTag(5, 0) + '<div class="vmess-link">' + text + '</div></div>';
+    }
+
+    fillTd('qrcode1', toVMess1(vmessConfig))
+    fillTd('qrcode2', toVMess2(vmessConfig))
+    fillTd('qrcode3', toVMess3(vmessConfig))
+    fillTd('qrcode4', toVMess3(vmessConfig))
+  </script>
+</body>
+
+</html>
