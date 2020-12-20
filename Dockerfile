@@ -1,4 +1,4 @@
-FROM caddy:2.0.0-alpine
+FROM caddy:2.2.1-alpine
 LABEL maintainer "nekocode <nekocode.cn@gmail.com>"
 
 # Install necessary libs
@@ -14,11 +14,11 @@ RUN cd /usr/local/bin && tar -xzf /tmp/forego.tgz \
 #
 # Install v2ray
 #
-ARG V2RAY_VERSION="v4.24.2"
+ARG V2RAY_VERSION="v4.31.0"
 ARG TZ="Asia/Shanghai"
 ENV TZ ${TZ}
 RUN mkdir -p /tmp/v2ray \
-    && curl "https://github.com/v2ray/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip" -Lo /tmp/v2ray/v2ray.zip \
+    && curl "https://github.com/v2fly/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip" -Lo /tmp/v2ray/v2ray.zip \
     && unzip /tmp/v2ray/v2ray.zip -d /tmp/v2ray/
 RUN mv /tmp/v2ray/v2ray /usr/bin \
     && mv /tmp/v2ray/v2ctl /usr/bin \
@@ -34,5 +34,6 @@ COPY ./caddy/ /caddy/
 COPY ./v2ray/ /v2ray/
 
 EXPOSE 80 443
+WORKDIR /
 
 ENTRYPOINT ["/main.sh"]
