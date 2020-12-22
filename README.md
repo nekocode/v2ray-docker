@@ -15,7 +15,7 @@ docker run -d -p 80:80 -p 443:443 -e DOMAIN=YOUR_DOMAIN nekocode/v2ray:latest
 docker run -d -p 80:80 -p 443:443 -e DOMAIN=YOUR_DOMAIN -e UUID=YOUR_UUID nekocode/v2ray:latest
 ```
 
-容器启动后访问你的域名，会得到以下页面：
+容器启动后，在浏览器中访问你的域名将会得到以下网页，它提供了各大平台常用客户端的配置二维码和 vmess 链接：
 
 <img src="screenshot.jpg" width="400">
 
