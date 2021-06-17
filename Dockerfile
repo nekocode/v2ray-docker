@@ -14,7 +14,7 @@ RUN cd /usr/local/bin && tar -xzf /tmp/forego.tgz \
 #
 # Install v2ray
 #
-ARG V2RAY_VERSION="v4.34.0"
+ARG V2RAY_VERSION="v4.39.2"
 ARG TZ="Asia/Shanghai"
 ENV TZ ${TZ}
 RUN mkdir -p /tmp/v2ray \
